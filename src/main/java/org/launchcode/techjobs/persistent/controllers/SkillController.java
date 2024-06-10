@@ -1,7 +1,6 @@
 package org.launchcode.techjobs.persistent.controllers;
 
 import jakarta.validation.Valid;
-import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,31 +20,32 @@ public class SkillController {
 
     // index method to show all skills
     @GetMapping("/")
-    public String index (Model model) {
+    public String index(Model model) {
         model.addAttribute("skills", skillRepository.findAll());
         return "skills/index";
     }
 
-    //displayAddSkillForm
+    // displayAddSkillForm
     @GetMapping("add")
-    public String displayAddSkillForm (Model model) {
+    public String displayAddSkillForm(Model model) {
         model.addAttribute(new Skill());
         return "skills/add";
     }
 
-    //processAddSkillForm
+    // processAddSkillForm
     @PostMapping("add")
-    public String processAddSkillForm (@ModelAttribute @Valid Skill newSkill, Errors errors, Model model) {
+    public String processAddSkillForm(@ModelAttribute @Valid Skill newSkill, Errors errors, Model model) {
         if (errors.hasErrors()) {
             return "skills/add";
         }
+
         skillRepository.save(newSkill);
-        return  "redirect:";
+        return "redirect:";
     }
 
-    //displayViewSkill
+    // displayViewSkill
     @GetMapping("view/{skillId}")
-    public String displayViewSkill (Model model, @PathVariable int skillId) {
+    public String displayViewSkill(Model model, @PathVariable int skillId) {
         Optional<Skill> optSkill = skillRepository.findById(skillId);
         if (optSkill.isPresent()) {
             Skill skill = optSkill.get();
